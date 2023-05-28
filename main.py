@@ -2,7 +2,7 @@
 from PyPDF2 import PdfReader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import FAISS, Chroma
+from langchain.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 import pickle
@@ -55,4 +55,3 @@ if st.button("Execute Query") and query:
     docs = docsearch.similarity_search(query)
     query_result = chain.run(input_documents=docs, question=query)
     st.write(query_result)
-    st.write(docs)

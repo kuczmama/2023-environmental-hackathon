@@ -12,6 +12,7 @@ watchdog = "*"
 "pdfminer.six" = "*"
 tiktoken = "*"
 streamlit = "*"
+chromadb = "*"
 
 [dev-packages]
 

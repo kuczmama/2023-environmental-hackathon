@@ -1,4 +1,6 @@
-# Answrly Accounting
+# Answrly Hackathon 2023
+
+Explain any document: https://kuczmama-2023-environmental-hackathon-main-soul2n.streamlit.app/
 
 Use OpenAI to answer questions about PDF documents: https://harishgarg.com/writing/build-a-chatgpt-for-your-pdf-documents/
 
