@@ -2,7 +2,7 @@
 from PyPDF2 import PdfReader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Chroma, FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 import pickle
@@ -21,7 +21,9 @@ query = st.text_input(
     key="placeholder",
 )
 embeddings = ''
-
+chain = load_qa_chain(
+    OpenAI(temperature=0, api_key=OPENAI_API_KEY, model_name=MODEL_NAME), chain_type="stuff"
+)
 if st.button("Execute Query") and query:
     pickle_file_name = "{}.pkl".format(uploaded_file.name)
     reader = PdfReader(uploaded_file)
@@ -33,7 +35,7 @@ if st.button("Execute Query") and query:
 
     text_splitter = CharacterTextSplitter(
         separator="\n",
-        chunk_size=1000,
+        chunk_size=2000,
         chunk_overlap=200,
         length_function=len,
     )
@@ -48,10 +50,7 @@ if st.button("Execute Query") and query:
         with open(pickle_file_name, "wb") as f:
             pickle.dump(embeddings, f)
 
-    docsearch = Chroma.from_texts(texts, embeddings)
-    chain = load_qa_chain(
-        OpenAI(temperature=0, api_key=OPENAI_API_KEY, model_name=MODEL_NAME), chain_type="stuff"
-    )
+    docsearch = FAISS.from_texts(texts, embeddings)
     docs = docsearch.similarity_search(query)
     query_result = chain.run(input_documents=docs, question=query)
     st.write(query_result)
